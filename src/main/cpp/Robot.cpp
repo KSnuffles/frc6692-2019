@@ -9,8 +9,6 @@
 
 #include <iostream>
 
-#include <frc/smartdashboard/SmartDashboard.h>
-
 using namespace frc;
 using namespace ctre;
 
@@ -21,9 +19,10 @@ Robot::Robot()
         , m_leftDriveB(new Spark(LEFT_DRIVE_B_PWM_ID))
         , m_rightDriveA(new Spark(RIGHT_DRIVE_A_PWM_ID))
         , m_rightDriveB(new Spark(RIGHT_DRIVE_B_PWM_ID))
-        , m_cargoIntake(new VictorSPX(CARGO_INTAKE_CAN_ID))
+        , m_cargoIntakeMotor(new VictorSPX(CARGO_INTAKE_CAN_ID))
         , m_drive(new Drive(m_leftDriveA, m_leftDriveB, m_rightDriveA,
-                            m_rightDriveB)) {
+                            m_rightDriveB))
+        , m_cargoIntake(new CargoIntake(m_cargoIntakeMotor)) {
 }
 
 void Robot::RobotInit() {
@@ -61,10 +60,18 @@ void Robot::TeleopInit() {
 }
 
 void Robot::TeleopPeriodic() {
-    double y = m_driverJoystick->GetRawAxis(1);
-    double x = m_driverJoystick->GetRawAxis(0);
+    double y = -m_driverJoystick->GetRawAxis(1);
+    double x = -m_driverJoystick->GetRawAxis(0);
+    double trigger = m_driverJoystick->GetRawButton(1);
 
     m_drive->OpenloopArcadeDrive(y, x);
+
+    if (trigger) {
+        m_cargoIntake->RunIntake(1.0);
+    }
+    else {
+        m_cargoIntake->StopIntake();
+    }
 }
 
 void Robot::TestPeriodic() {

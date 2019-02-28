@@ -17,6 +17,7 @@
 
 #include "RobotInfo.h"
 #include "Drive.h"
+#include "CargoIntake.h"
 
 using namespace frc;
 using namespace ctre;
@@ -40,8 +41,9 @@ private:
     Spark *m_rightDriveA;
     Spark *m_rightDriveB;
 
-    VictorSPX *m_cargoIntake;
+    VictorSPX *m_cargoIntakeMotor;
 
     Drive *m_drive;
+    CargoIntake *m_cargoIntake;
 };
 }

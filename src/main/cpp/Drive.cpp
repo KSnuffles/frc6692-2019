@@ -31,10 +31,16 @@ void Drive::SetDriveOutputVBus(double left, double right) {
     m_rightDriveOutput = right;
 
     if (std::isnan(m_leftDriveOutput) || std::isnan(m_rightDriveOutput)) {
-        // set 0.0
+        m_leftDriveA->Set(0.0);
+        m_leftDriveB->Set(0.0);
+        m_rightDriveA->Set(0.0);
+        m_rightDriveB->Set(0.0);
     }
     else {
-        // set values
+        m_leftDriveA->Set(m_leftDriveOutput);
+        m_leftDriveB->Set(m_leftDriveOutput);
+        m_rightDriveA->Set(m_rightDriveOutput);
+        m_rightDriveB->Set(m_rightDriveOutput);
     }
 }
 }
