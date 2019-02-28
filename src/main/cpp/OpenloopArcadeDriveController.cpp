@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "OpenloopArcadeDriveController.h"
 
 namespace frc6692 {
@@ -16,7 +18,7 @@ OpenloopArcadeDriveController::CalcDriveOutput() {
 
 void OpenloopArcadeDriveController::SetJoysticks(double throttle, double turn) {
     throttle = Util::bound(throttle, -1.0, 1.0);
-    turn = Util::bound(turn, -1.0, 1.0);
+    turn = Util::bound(turn, -1.0, 1.0) * 0.3;
 
     m_leftOutput = throttle - turn;
     m_rightOutput = throttle + turn;
@@ -30,6 +32,6 @@ void OpenloopArcadeDriveController::SetJoysticks(double throttle, double turn) {
     m_driveOutput.leftOutput = m_leftOutput;
     m_driveOutput.rightOutput = m_rightOutput;
 
-    // printf("left %lf  right %lf\n", m_leftOutput, m_rightOutput);
+    printf("left %lf  right %lf\n", m_leftOutput, m_rightOutput);
 }
 }

@@ -18,6 +18,7 @@
 #include "RobotInfo.h"
 #include "Drive.h"
 #include "CargoIntake.h"
+#include "HatchGrabber.h"
 
 using namespace frc;
 using namespace ctre;
@@ -36,14 +37,14 @@ public:
 
 private:
     Joystick *m_driverJoystick;
-    Spark *m_leftDriveA;
-    Spark *m_leftDriveB;
-    Spark *m_rightDriveA;
-    Spark *m_rightDriveB;
+    Spark *m_leftDrive;
+    Spark *m_rightDrive;
 
+    VictorSPX *m_hatchGrabberMotor;
     VictorSPX *m_cargoIntakeMotor;
 
     Drive *m_drive;
     CargoIntake *m_cargoIntake;
+    HatchGrabber *m_hatchGrabber;
 };
 }

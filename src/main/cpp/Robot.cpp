@@ -15,14 +15,13 @@ using namespace ctre;
 namespace frc6692 {
 Robot::Robot()
         : m_driverJoystick(new Joystick(DRIVER_JOYSTICK_PORT))
-        , m_leftDriveA(new Spark(LEFT_DRIVE_A_PWM_ID))
-        , m_leftDriveB(new Spark(LEFT_DRIVE_B_PWM_ID))
-        , m_rightDriveA(new Spark(RIGHT_DRIVE_A_PWM_ID))
-        , m_rightDriveB(new Spark(RIGHT_DRIVE_B_PWM_ID))
+        , m_leftDrive(new Spark(LEFT_DRIVE_PWM_ID))
+        , m_rightDrive(new Spark(RIGHT_DRIVE_PWM_ID))
         , m_cargoIntakeMotor(new VictorSPX(CARGO_INTAKE_CAN_ID))
-        , m_drive(new Drive(m_leftDriveA, m_leftDriveB, m_rightDriveA,
-                            m_rightDriveB))
-        , m_cargoIntake(new CargoIntake(m_cargoIntakeMotor)) {
+        , m_hatchGrabberMotor(new VictorSPX(HATCH_GRABBER_CAN_ID))
+        , m_drive(new Drive(m_leftDrive, m_rightDrive))
+        , m_cargoIntake(new CargoIntake(m_cargoIntakeMotor))
+        , m_hatchGrabber(new HatchGrabber(m_hatchGrabberMotor)) {
 }
 
 void Robot::RobotInit() {
@@ -63,14 +62,36 @@ void Robot::TeleopPeriodic() {
     double y = -m_driverJoystick->GetRawAxis(1);
     double x = -m_driverJoystick->GetRawAxis(0);
     double trigger = m_driverJoystick->GetRawButton(1);
+    double thumb = m_driverJoystick->GetRawButton(2);
+    double hatchUp = m_driverJoystick->GetRawButton(8);
+    double hatchDown = m_driverJoystick->GetRawButton(7);
 
     m_drive->OpenloopArcadeDrive(y, x);
 
+    if (trigger && thumb) {
+        m_cargoIntake->StopIntake();
+    }
     if (trigger) {
         m_cargoIntake->RunIntake(1.0);
     }
-    else {
+    if (thumb) {
+        m_cargoIntake->RunIntake(-1.0);
+    }
+    if (!trigger && !thumb) {
         m_cargoIntake->StopIntake();
+    }
+
+    if (hatchUp && hatchDown) {
+        m_hatchGrabber->StopGrabber();
+    }
+    if (hatchUp) {
+        m_hatchGrabber->RunGrabber(1.0);
+    }
+    if (hatchDown) {
+        m_hatchGrabber->RunGrabber(-1.0);
+    }
+    if (!hatchUp && !hatchDown) {
+        m_hatchGrabber->StopGrabber();
     }
 }
 

@@ -3,6 +3,7 @@
 namespace frc6692 {
 CargoIntake::CargoIntake(VictorSPX *cargoIntakeMotor)
         : m_cargoIntakeMotor(cargoIntakeMotor) {
+    m_cargoIntakeMotor->SetInverted(true);
 }
 
 void CargoIntake::RunIntake(double value) {

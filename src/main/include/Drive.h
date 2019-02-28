@@ -28,8 +28,7 @@ public:
     /**
      * Construct a drive.
      */
-    Drive(Spark *leftDriveA, Spark *leftDriveB, Spark *rightDriveA,
-          Spark *rightDriveB);
+    Drive(Spark *leftDrive, Spark *rightDrive);
     virtual ~Drive();
 
     /**
@@ -40,12 +39,6 @@ public:
     void OpenloopArcadeDrive(double throttle, double turn);
 
     /**
-     * Return the average current in amperes through Talon SRX output.
-     * @return The average current.
-     */
-    double GetDriveCurrent() const;
-
-    /**
      * Used by the DriveController to set motor values in percent.
      * @param left Percent output to send to left motors.
      * @param right Percent output to send to right motors.
@@ -53,10 +46,8 @@ public:
     void SetDriveOutputVBus(double left, double right);
 
 private:
-    Spark *m_leftDriveA;
-    Spark *m_leftDriveB;
-    Spark *m_rightDriveA;
-    Spark *m_rightDriveB;
+    Spark *m_leftDrive;
+    Spark *m_rightDrive;
 
     double m_leftDriveOutput;
     double m_rightDriveOutput;
