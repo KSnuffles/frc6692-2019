@@ -11,10 +11,22 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
+using namespace frc;
+using namespace ctre;
+
+namespace frc6692 {
+Robot::Robot()
+        : m_driverJoystick(new Joystick(DRIVER_JOYSTICK_PORT))
+        , m_leftDriveA(new Spark(LEFT_DRIVE_A_PWM_ID))
+        , m_leftDriveB(new Spark(LEFT_DRIVE_B_PWM_ID))
+        , m_rightDriveA(new Spark(RIGHT_DRIVE_A_PWM_ID))
+        , m_rightDriveB(new Spark(RIGHT_DRIVE_B_PWM_ID))
+        , m_cargoIntake(new VictorSPX(CARGO_INTAKE_CAN_ID))
+        , m_drive(new Drive(m_leftDriveA, m_leftDriveB, m_rightDriveA,
+                            m_rightDriveB)) {
+}
+
 void Robot::RobotInit() {
-  m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-  m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 }
 
 /**
@@ -25,7 +37,8 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+}
 
 /**
  * This autonomous (along with the chooser code above) shows how to select
@@ -39,32 +52,27 @@ void Robot::RobotPeriodic() {}
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-  m_autoSelected = m_chooser.GetSelected();
-  // m_autoSelected = SmartDashboard::GetString("Auto Selector",
-  //     kAutoNameDefault);
-  std::cout << "Auto selected: " << m_autoSelected << std::endl;
-
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
 }
 
 void Robot::AutonomousPeriodic() {
-  if (m_autoSelected == kAutoNameCustom) {
-    // Custom Auto goes here
-  } else {
-    // Default Auto goes here
-  }
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit() {
+}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+    double y = m_driverJoystick->GetRawAxis(1);
+    double x = m_driverJoystick->GetRawAxis(0);
 
-void Robot::TestPeriodic() {}
+    m_drive->OpenloopArcadeDrive(y, x);
+}
+
+void Robot::TestPeriodic() {
+}
+}
 
 #ifndef RUNNING_FRC_TESTS
-int main() { return frc::StartRobot<Robot>(); }
+int main() {
+    return StartRobot<frc6692::Robot>();
+}
 #endif

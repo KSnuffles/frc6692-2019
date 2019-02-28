@@ -10,21 +10,38 @@
 #include <string>
 
 #include <frc/TimedRobot.h>
-#include <frc/smartdashboard/SendableChooser.h>
+#include <frc/Joystick.h>
+#include <frc/Spark.h>
 
-class Robot : public frc::TimedRobot {
- public:
-  void RobotInit() override;
-  void RobotPeriodic() override;
-  void AutonomousInit() override;
-  void AutonomousPeriodic() override;
-  void TeleopInit() override;
-  void TeleopPeriodic() override;
-  void TestPeriodic() override;
+#include <ctre/Phoenix.h>
 
- private:
-  frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Default";
-  const std::string kAutoNameCustom = "My Auto";
-  std::string m_autoSelected;
+#include "RobotInfo.h"
+#include "Drive.h"
+
+using namespace frc;
+using namespace ctre;
+
+namespace frc6692 {
+class Robot : public TimedRobot {
+public:
+    Robot();
+    void RobotInit() override;
+    void RobotPeriodic() override;
+    void AutonomousInit() override;
+    void AutonomousPeriodic() override;
+    void TeleopInit() override;
+    void TeleopPeriodic() override;
+    void TestPeriodic() override;
+
+private:
+    Joystick *m_driverJoystick;
+    Spark *m_leftDriveA;
+    Spark *m_leftDriveB;
+    Spark *m_rightDriveA;
+    Spark *m_rightDriveB;
+
+    VictorSPX *m_cargoIntake;
+
+    Drive *m_drive;
 };
+}
