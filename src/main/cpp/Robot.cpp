@@ -10,6 +10,7 @@
 #include <iostream>
 
 using namespace frc;
+using namespace cs;
 using namespace ctre;
 
 namespace frc6692 {
@@ -22,9 +23,12 @@ Robot::Robot()
         , m_drive(new Drive(m_leftDrive, m_rightDrive))
         , m_cargoIntake(new CargoIntake(m_cargoIntakeMotor))
         , m_hatchGrabber(new HatchGrabber(m_hatchGrabberMotor)) {
+        printf("Constructed a robot!");
 }
 
 void Robot::RobotInit() {
+    UsbCamera camera = CameraServer::GetInstance()->StartAutomaticCapture();
+    camera.SetResolution(640, 480);
 }
 
 /**
@@ -53,6 +57,40 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
+    double y = -m_driverJoystick->GetRawAxis(1);
+    double x = -m_driverJoystick->GetRawAxis(0);
+    double trigger = m_driverJoystick->GetRawButton(1);
+    double thumb = m_driverJoystick->GetRawButton(2);
+    double hatchUp = m_driverJoystick->GetRawButton(8);
+    double hatchDown = m_driverJoystick->GetRawButton(7);
+
+    m_drive->OpenloopArcadeDrive(y, x);
+
+    if (trigger && thumb) {
+        m_cargoIntake->StopIntake();
+    }
+    if (trigger) {
+        m_cargoIntake->RunIntake(1.0);
+    }
+    if (thumb) {
+        m_cargoIntake->RunIntake(-1.0);
+    }
+    if (!trigger && !thumb) {
+        m_cargoIntake->StopIntake();
+    }
+
+    if (hatchUp && hatchDown) {
+        m_hatchGrabber->StopGrabber();
+    }
+    if (hatchUp) {
+        m_hatchGrabber->RunGrabber(1.0);
+    }
+    if (hatchDown) {
+        m_hatchGrabber->RunGrabber(-1.0);
+    }
+    if (!hatchUp && !hatchDown) {
+        m_hatchGrabber->StopGrabber();
+    }
 }
 
 void Robot::TeleopInit() {
@@ -95,7 +133,44 @@ void Robot::TeleopPeriodic() {
     }
 }
 
+void Robot::TestInit() {
+}
+
 void Robot::TestPeriodic() {
+    double y = -m_driverJoystick->GetRawAxis(1);
+    double x = -m_driverJoystick->GetRawAxis(0);
+    double trigger = m_driverJoystick->GetRawButton(1);
+    double thumb = m_driverJoystick->GetRawButton(2);
+    double hatchUp = m_driverJoystick->GetRawButton(8);
+    double hatchDown = m_driverJoystick->GetRawButton(7);
+
+    m_drive->OpenloopArcadeDrive(y, x);
+
+    if (trigger && thumb) {
+        m_cargoIntake->StopIntake();
+    }
+    if (trigger) {
+        m_cargoIntake->RunIntake(1.0);
+    }
+    if (thumb) {
+        m_cargoIntake->RunIntake(-1.0);
+    }
+    if (!trigger && !thumb) {
+        m_cargoIntake->StopIntake();
+    }
+
+    if (hatchUp && hatchDown) {
+        m_hatchGrabber->StopGrabber();
+    }
+    if (hatchUp) {
+        m_hatchGrabber->RunGrabber(1.0);
+    }
+    if (hatchDown) {
+        m_hatchGrabber->RunGrabber(-1.0);
+    }
+    if (!hatchUp && !hatchDown) {
+        m_hatchGrabber->StopGrabber();
+    }
 }
 }
 

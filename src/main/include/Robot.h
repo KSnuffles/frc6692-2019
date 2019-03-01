@@ -12,6 +12,7 @@
 #include <frc/TimedRobot.h>
 #include <frc/Joystick.h>
 #include <frc/Spark.h>
+#include <frc/WPILib.h>
 
 #include <ctre/Phoenix.h>
 
@@ -21,6 +22,7 @@
 #include "HatchGrabber.h"
 
 using namespace frc;
+using namespace cs;
 using namespace ctre;
 
 namespace frc6692 {
@@ -33,6 +35,7 @@ public:
     void AutonomousPeriodic() override;
     void TeleopInit() override;
     void TeleopPeriodic() override;
+    void TestInit() override;
     void TestPeriodic() override;
 
 private:
